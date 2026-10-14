@@ -1,10 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class DungeonGenerator : MonoBehaviour
+public class DungeonGenerator
 {
-    [SerializeField] private int DungeonWidth;
-    [SerializeField] private int DungeonLength;
+    private List<RoomNode> allSpaceNodes = new();
 
-    [SerializeField] private int MinRoomWidth;
-    [SerializeField] private int MaxRoomWidth;
+    private int dungeonWidth;
+    private int dungeonLength;
+
+    public DungeonGenerator(int dungeonWidth, int dungeonLength)
+    {
+        this.dungeonWidth = dungeonWidth;
+        this.dungeonLength = dungeonLength;
+    }
+
+    public List<Node> CalculateRooms(int maxIterations, int minRoomWidth, int minRoomLength)
+    {
+        BinarySpacePartitioner bsp = new BinarySpacePartitioner(dungeonWidth, dungeonLength);
+        allSpaceNodes = bsp.PrepareNodesCollection(maxIterations, minRoomWidth, minRoomLength);
+    }
 }
