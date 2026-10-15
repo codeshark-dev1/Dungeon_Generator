@@ -2,6 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+// Helper methods for reading the space tree and picking room corners.
 public static class StructureHelper
 {
     // Returns all leaf nodes (nodes without children) below the given parent,
@@ -36,6 +37,9 @@ public static class StructureHelper
         return listToReturn;
     }
 
+    // Returns a random bottom-left corner inside the area.
+    // The point is taken from the lower-left part of the area; pointModifier (0-1) sets how far it may go,
+    // and offset keeps it away from the edges.
     public static Vector2Int GenerateBottomLeftCornerBetween(Vector2Int boundaryLeftPoint, Vector2Int boundaryRightPoint, float pointModifier, int offset)
     {
         int minX = boundaryLeftPoint.x + offset;
@@ -45,9 +49,12 @@ public static class StructureHelper
 
         return new Vector2Int(
             Random.Range(minX, (int)(minX + (maxX - minX) * pointModifier)),
-            Random.Range(minY, (int)(minY + (minY - minY) * pointModifier)));
+            Random.Range(minY, (int)(minY + (maxY - minY) * pointModifier)));
     }
 
+    // Returns a random top-right corner inside the area.
+    // The point is taken from the upper-right part of the area; pointModifier (0-1) sets where that part starts,
+    // and offset keeps it away from the edges.
     public static Vector2Int GenerateTopRightCornerBetween(Vector2Int boundaryLeftPoint, Vector2Int boundaryRightPoint, float pointModifier, int offset)
     {
         int minX = boundaryLeftPoint.x + offset;
