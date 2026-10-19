@@ -480,8 +480,9 @@ MonoBehaviour:
   DungeonLength: 100
   MinRoomWidth: 25
   MinRoomLength: 25
-  MaxIterations: 1
+  MaxIterations: 100
   CorridorWidth: 5
+  Material: {fileID: 2100000, guid: 71f8adbe4d5952649b8e29fdae52ea5c, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

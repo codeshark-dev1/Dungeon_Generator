@@ -16,6 +16,7 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField] private int MaxIterations;
     // Width of the corridors between rooms (corridors are not implemented yet)
     [SerializeField] private int CorridorWidth;
+    [SerializeField] private Material Material;
 
     // Unity calls this once when the scene starts
     private void Start()
@@ -29,5 +30,54 @@ public class DungeonCreator : MonoBehaviour
     {
         DungeonGenerator generator = new DungeonGenerator(DungeonWidth, DungeonLength);
         var listOfRooms = generator.CalculateRooms(MaxIterations, MinRoomWidth, MinRoomLength);
+        for (int i = 0; i< listOfRooms.Count; i++)
+        {
+            CreateMesh(listOfRooms[i].BottomLeftAreaCorner, listOfRooms[i].TopRightAreaCorner);
+        }
+    }
+
+    private void CreateMesh(Vector2 bottomLeftCorner, Vector2 topRightCorner)
+    {
+        Vector3 bottomLeftVert = new Vector3(bottomLeftCorner.x, 0, bottomLeftCorner.y);
+        Vector3 bottomRightVert = new Vector3(topRightCorner.x, 0, bottomLeftCorner.y);
+        Vector3 topLeftVert = new Vector3(bottomLeftCorner.x, 0, topRightCorner.y);
+        Vector3 topRightVert = new Vector3(topRightCorner.x, 0, topRightCorner.y);
+
+        Vector3[] vertices = new Vector3[]
+        {
+            topLeftVert,
+            topRightVert,
+            bottomLeftVert,
+            bottomRightVert
+        };
+
+        Vector2[] uvs = new Vector2[vertices.Length];
+        for (int i = 0; i < uvs.Length; i++)
+        {
+            uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
+        }
+
+        int[] triangles = new int[]
+        {
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+        };
+
+        Mesh mesh = new Mesh();
+        mesh.vertices = vertices;
+        mesh.uv = uvs;
+        mesh.triangles = triangles;
+
+        GameObject dungeonFloor = new GameObject("Mesh"+bottomLeftCorner, typeof(MeshFilter), typeof(MeshRenderer));
+        
+        dungeonFloor.transform.position = Vector3.zero;
+        dungeonFloor.transform.localScale = Vector3.one;
+        dungeonFloor.GetComponent<MeshFilter>().mesh = mesh;
+        dungeonFloor.GetComponent<MeshRenderer>().material = Material;
+
     }
 }
