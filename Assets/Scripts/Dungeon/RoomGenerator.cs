@@ -19,7 +19,7 @@ public class RoomGenerator
 
     // Places a room inside each given space and returns the rooms.
     // Each room is a random rectangle that stays away from the edges of its space.
-    public List<RoomNode> GenerateRoomsInGivenSpaces(List<Node> roomSpaces)
+    public List<RoomNode> GenerateRoomsInGivenSpaces(List<Node> roomSpaces, float roomBottomCornerModifier, float roomTopCornerModifier, int roomOffset)
     {
         // The rooms that will be returned
         List<RoomNode> listToReturn = new();
@@ -27,12 +27,12 @@ public class RoomGenerator
         {
             // Random bottom-left corner in the lower-left part of the space
             Vector2Int newBottomLeftPoint = StructureHelper.GenerateBottomLeftCornerBetween(
-                space.BottomLeftAreaCorner, space.TopRightAreaCorner, 0.1f, 1
+                space.BottomLeftAreaCorner, space.TopRightAreaCorner, roomBottomCornerModifier, roomOffset
                 );
 
             // Random top-right corner in the upper-right part of the space
             Vector2Int newTopRightPoint = StructureHelper.GenerateTopRightCornerBetween(
-                space.BottomLeftAreaCorner, space.TopRightAreaCorner, 0.9f, 1
+                space.BottomLeftAreaCorner, space.TopRightAreaCorner, roomTopCornerModifier, roomOffset
                 );
 
             // Replace the space's corners with the room's corners, and update the other two

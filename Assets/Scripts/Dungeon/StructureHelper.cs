@@ -7,7 +7,7 @@ public static class StructureHelper
 {
     // Returns all leaf nodes (nodes without children) below the given parent,
     // using a breadth-first traversal of the graph.
-    public static List<Node> TraverseGraphToExtractLowestLeaves(RoomNode parentNode)
+    public static List<Node> TraverseGraphToExtractLowestLeaves(Node parentNode)
     {
         Queue<Node> nodesToCheck = new();
         List<Node> listToReturn = new();
@@ -67,4 +67,19 @@ public static class StructureHelper
             Random.Range((int)(minY + (maxY - minY) * pointModifier), maxY)
             );
     }
+
+    public static Vector2Int CalculateMiddlePoint(Vector2Int v1, Vector2Int v2)
+    {
+        Vector2 sum = v1 + v2;
+        Vector2 tempVector = sum / 2;
+        return new Vector2Int((int)tempVector.x, (int)tempVector.y);
+    }
 }
+
+public enum RelativePosition
+{
+    Up,
+    Down,
+    Left,
+    Right
+};

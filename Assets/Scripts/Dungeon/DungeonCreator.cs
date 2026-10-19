@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // Entry point of the dungeon generator.
@@ -18,6 +19,15 @@ public class DungeonCreator : MonoBehaviour
     [SerializeField] private int CorridorWidth;
     [SerializeField] private Material Material;
 
+    [Range(0.0f, 0.3f)]
+    [SerializeField] private float RoomBottomCornerModifier;
+
+    [Range(0.7f, 1.0f)]
+    [SerializeField] private float RoomTopCornerModifier;
+
+    [Range(0, 2)]
+    [SerializeField] private int RoomOffset;
+
     // Unity calls this once when the scene starts
     private void Start()
     {
@@ -29,8 +39,8 @@ public class DungeonCreator : MonoBehaviour
     private void CreateDungeon()
     {
         DungeonGenerator generator = new DungeonGenerator(DungeonWidth, DungeonLength);
-        var listOfRooms = generator.CalculateRooms(MaxIterations, MinRoomWidth, MinRoomLength);
-        for (int i = 0; i< listOfRooms.Count; i++)
+        var listOfRooms = generator.CalculateDungeon(MaxIterations, MinRoomWidth, MinRoomLength, RoomBottomCornerModifier, RoomTopCornerModifier, RoomOffset, CorridorWidth);
+        for (int i = 0; i < listOfRooms.Count; i++)
         {
             CreateMesh(listOfRooms[i].BottomLeftAreaCorner, listOfRooms[i].TopRightAreaCorner);
         }
@@ -72,8 +82,8 @@ public class DungeonCreator : MonoBehaviour
         mesh.uv = uvs;
         mesh.triangles = triangles;
 
-        GameObject dungeonFloor = new GameObject("Mesh"+bottomLeftCorner, typeof(MeshFilter), typeof(MeshRenderer));
-        
+        GameObject dungeonFloor = new GameObject("Mesh" + bottomLeftCorner, typeof(MeshFilter), typeof(MeshRenderer));
+
         dungeonFloor.transform.position = Vector3.zero;
         dungeonFloor.transform.localScale = Vector3.one;
         dungeonFloor.GetComponent<MeshFilter>().mesh = mesh;
